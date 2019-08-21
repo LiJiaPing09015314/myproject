@@ -1,0 +1,77 @@
+<!--文档类型的声明-->
+<!doctype html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+	</head>
+	<body onload="carlist()">  
+		<select id="tid" onchange="carlist()">
+		  <option value="1">lt8</option>
+			<option value="2">lt15</option>
+			<option value="3">lt30</option>
+			<option value="4">SUV</option>
+		</select>
+		<div id="d1"></div>
+		<script>
+		  function cardel($cid){
+			  var xhr=new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+				  if(xhr.readyState==4&&xhr.status==200){
+					   var result=xhr.responseText;
+						 if(result==1){
+						   alert("删除成功");
+               carlist();
+						 }else{
+						   alert("删除失败");
+						 }						 					 
+					}
+				}
+				xhr.open("delete",`/car/del/${$cid}`,true);
+				xhr.send();
+			}
+		  function carlist(){
+			  var $tid=tid.value;
+				//创建异步请求
+				var xhr=new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+				  if(xhr.readyState==4&&xhr.status==200){
+					  var result=xhr.responseText;
+						var arr=JSON.parse(result);
+            var strHTML=`
+						  <table border="1px">
+							  <tr>
+								  <th>汽车图片</th>
+									<th>汽车价格</th>
+									<th>汽车名称</th>
+									<th>操作</th>
+								</tr>`;
+						for(var i=0;i<arr.length;i++){
+						strHTML+=`
+						  <tr>
+							  <td><img src="img/${arr[i].pic}"></td>
+								<td>${arr[i].price}</td>
+								<td>${arr[i].cname}</td>
+								<td>
+								 <a href="cardetail.html?cid=${arr[i].cid}">商品详情</a>
+								 <a href="javascript: cardel(${arr[i].cid})">删除</a>
+								</td>
+							</tr>
+						`;
+						}
+						
+						strHTML+=`</table>`;
+						d1.innerHTML=strHTML;
+					}
+				}
+				xhr.open("get",`/car/carlist/${$tid}`,true);
+				xhr.send();
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+

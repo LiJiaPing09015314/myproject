@@ -1,0 +1,49 @@
+<!--文档类型的声明-->
+<!doctype html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+	</head>
+	<body onload="cardetail()">
+    <h2>商品详情</h2>
+		<ul>
+		  <li id="pic"></li>
+			<li id="cname"></li>
+			<li id="price"></li>
+			<li id="tid"></li>
+		</ul>
+		<script>
+		  function cardetail(){
+				//获取地址栏中的查询字符串
+			  var urlparams=new URLSearchParams(location.search);
+				//获取查询字符串中的cid
+				var $cid=urlparams.get("cid");
+				console.log($cid);
+				var xhr=new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+				  if(xhr.readyState==4&&xhr.status==200){
+					  var result=xhr.responseText;
+						var arr=JSON.parse(result);
+						//console.log(arr);
+						//console.log(arr[0].pic);
+						pic.innerHTML=`
+						<img src="img/${arr[0].pic}">
+						`;
+						cname.innerHTML=arr[0].cname;
+						price.innerHTML=arr[0].price;
+						tid.innerHTML=arr[0].tid;
+ 
+					}
+				}
+				xhr.open("get",`/car/cardetails/${$cid}`,true);
+        xhr.send();
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+

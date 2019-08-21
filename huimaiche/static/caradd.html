@@ -1,0 +1,55 @@
+<!--文档类型的声明-->
+<!doctype html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8"/>
+	</head>
+	<body>
+		<h2>数据添加</h2>
+		汽车名称：<input type="text"id="cname"><br>
+		汽车价格：<input type="text"id="price"><br>
+		汽车图片：<input type="text"id="pic"><br>		
+		
+		汽车类别：<input type="text"id="tid"><br>
+   
+	<!--	汽车类别:<select name="" id="tid">
+		  <option value="lt8">lt8</option>
+			<option value="lt15">lt15</option>
+			<option value="lt30">lt30</option>
+			<option value="suv">SUV</option>
+		</select><br>-->
+		<button onclick="caradd()">添加</button>
+		<button><a href="carlist.html">跳转</a></button>
+		<script>
+		  function caradd(){
+			  //创建异步请求
+        var xhr=new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+				  if(xhr.readyState==4&&xhr.status==200){
+					var result=xhr.responseText;
+					if(result==1){
+					  alert(`"code":1,"msg":"添加成功"`);
+					}else{
+					  alert("注册失败");
+					}				
+				 }
+				}
+        xhr.open("post","/car/caradd",true);
+				var $cname=cname.value;
+				var $price=price.value;
+				var $pic=pic.value;
+        var $tid=tid.value;
+        var formdata="cname="+$cname+"&price="+$price+"&pic="+$pic+"&tid="+$tid;
+        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				console.log(formdata);
+        xhr.send(formdata);
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+
